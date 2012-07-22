@@ -1,4 +1,4 @@
 cron:
 - description: sync worker
   url: /sync
-  schedule: every 5 minutes
+  schedule: every 20 minutes

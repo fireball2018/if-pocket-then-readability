@@ -33,6 +33,9 @@ class SyncHandler(webapp.RequestHandler):
 
         assert settings.mail_sender
         assert settings.readability_mail
+        assert settings.pocket_apikey
+        assert settings.pocket_username
+        assert settings.pocket_password
 
         since = memcache.get("last_sync")
         memcache.set("last_sync", int(time.time()))
@@ -60,10 +63,6 @@ class SyncHandler(webapp.RequestHandler):
 
     def pocket_get(self, since=0):
 
-        assert settings.pocket_apikey
-        assert settings.pocket_username
-        assert settings.pocket_password
-
         data = {
             "apikey":settings.pocket_apikey,
             "username":settings.pocket_username,
@@ -79,7 +78,8 @@ class SyncHandler(webapp.RequestHandler):
                                 payload = urllib.urlencode(data), 
                                 method = urlfetch.POST)
 
-        if result and result.status_code == 200 and result.content:
+        if result and result.status_code == 200 \
+            and result.content:
 
             response = json.loads(result.content)
 
